@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+	<title>Quiz Application</title>
+	<link rel = "stylesheet" href = "{% static 'css/quiz.css' %}">
+	<script src = "{% static 'js/quiz.js' %}"></script>
+</head>
+<body>
+	<div id = "container">
+		<header>
+			<a href="/" class = "button">Go Back</a>
+			<h1>Test Question</h1>
+		</header>
+
+		<section>
+			<div id = "results"></div>
+			<form name = "quizForm" onsubmit = "return submitAnswers(answers = [{% for q in questions %}'{{ q.answer }}',{% endfor %}])">
+			{% for q in questions %}
+				<h3> {{ q.id }}.  {{ q.question }}</h3>
+                <form method="post" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form.as_p }}
+
+
+                <hr>
+                {% if q.ques_image %}
+                    <hr>
+                <img class="Image" style="width:18rem" src="{{q.ques_image.url}}">
+                {% endif %}
+
+                <hr>
+				<input type = "radio" name = "q{{ q.id }}" value = "a" id = "q1a">   a. {{ q.option1 }}<br><br>
+				<input type = "radio" name = "q{{ q.id }}" value = "b" id = "q1b">   b. {{ q.option2 }}<br><br>
+				<input type = "radio" name = "q{{ q.id }}" value = "c" id = "q1c">   c. {{ q.option3 }}<br><br>
+				<input type = "radio" name = "q{{ q.id }}" value = "d" id = "q1d">   d. {{ q.option4 }}<br><br>
+
+
+			{% endfor %}
+
+
+				<br><br>
+{#            <form method="post" action="" enctype="multipart/form-data">#}
+{#                {% csrf_token %}#}
+{#                {{form.as_p }}#}
+
+				          <input type = "submit" class="pass" value = "Submit Answer">
+            </form>
+			<br><br>
+		<a href="/questions" class="button">Reset</a>
+		</section>
+		<footer>
+		</footer>
+	</div>
+
+</body>
+</html>
